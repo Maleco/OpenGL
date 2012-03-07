@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="../openglframework/fragmentshader.glsl" open="0" top="0" tabpos="3">
+		<Cursor position="581" topLine="0" />
+	</File>
+	<File name="../openglframework/glew.c" open="0" top="0" tabpos="0">
+		<Cursor position="2848" topLine="64" />
+	</File>
+	<File name="../openglframework/glslshaders.c" open="0" top="0" tabpos="2">
+		<Cursor position="2065" topLine="39" />
+	</File>
+	<File name="../openglframework/glxew.h" open="0" top="0" tabpos="3">
+		<Cursor position="4406" topLine="79" />
+	</File>
+	<File name="../openglframework/openglframework.c" open="0" top="0" tabpos="1">
+		<Cursor position="2831" topLine="81" />
+	</File>
+	<File name="../openglframework/vertexshader.glsl" open="0" top="0" tabpos="0">
+		<Cursor position="182" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

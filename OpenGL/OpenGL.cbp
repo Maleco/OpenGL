@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OpenGL" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/OpenGL" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../openglframework/Makefile" />
+		<Unit filename="../openglframework/OpenGLFramework.sln" />
+		<Unit filename="../openglframework/OpenGLFramework.suo" />
+		<Unit filename="../openglframework/OpenGLFramework.vcproj" />
+		<Unit filename="../openglframework/README" />
+		<Unit filename="../openglframework/fragmentshader.glsl" />
+		<Unit filename="../openglframework/freeglut.dll" />
+		<Unit filename="../openglframework/glew.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../openglframework/glew.h" />
+		<Unit filename="../openglframework/glslshaders.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../openglframework/glslshaders.h" />
+		<Unit filename="../openglframework/glslshaders.o" />
+		<Unit filename="../openglframework/glxew.h" />
+		<Unit filename="../openglframework/includes/GL/freeglut.h" />
+		<Unit filename="../openglframework/includes/GL/freeglut_ext.h" />
+		<Unit filename="../openglframework/includes/GL/freeglut_std.h" />
+		<Unit filename="../openglframework/libs/freeglut.lib" />
+		<Unit filename="../openglframework/make.dep" />
+		<Unit filename="../openglframework/openglframework" />
+		<Unit filename="../openglframework/openglframework.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../openglframework/openglframework.o" />
+		<Unit filename="../openglframework/vertexshader.glsl" />
+		<Unit filename="../openglframework/wglew.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
