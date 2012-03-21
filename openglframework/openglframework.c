@@ -29,6 +29,7 @@
 #include <GL/glut.h>
 #endif
 
+#include "glm.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -39,7 +40,7 @@ typedef int bool;
 #define true 1
 #define false 0
 #define SPHERE_N (20)
-#define apertureSamples 2.0
+#define apertureSamples 1.0
 #define CONST_C 10 / sqrt(apertureSamples)
 #define GOLDEN_ANGLE 137.508
 #define eyeDistance	1000
@@ -48,6 +49,9 @@ typedef int bool;
 int oldX, oldY, deltaX, deltaY;		//Keep track of mouse-movements
 bool Rotate, Zoom;			//Keep track of transformations
 float zoomLevel;
+GLMmodel *model;
+GLuint vboDots;
+GLuint vboTriangles;
 
 ///Functions
 void setGlMaterial(GLfloat r, GLfloat g, GLfloat b, GLfloat ka, GLfloat kd, GLfloat ks, GLfloat n)
@@ -61,97 +65,89 @@ void setGlMaterial(GLfloat r, GLfloat g, GLfloat b, GLfloat ka, GLfloat kd, GLfl
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, n);
 }
 
-
-void init(void)
+void glmInitVBO(GLMmodel *model)
 {
-   GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat mat_shininess[] = { 50.0 };
+	glGenBuffersARB(1, &vboDots);
+	glGenBuffersARB(1, &vboTriangles);
 
-   GLfloat light_position[] = {-200.0,600.0,1500.0, 1.0};
-   GLfloat light_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-   GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	//Hold the model's vertices (points)
+	//vboDots = calloc(model->numvertices, sizeof(GLuint));
+	//vboDots = model->vertices;
 
-   glClearColor (0.0, 0.0, 0.0, 0.0);
-   glShadeModel (GL_SMOOTH);
+	//Hold the model's triangles
+	//vboTriangles = calloc(model->numtriangles, sizeof(GLuint));
+	//vboTriangles = model->triangles;
 
-   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-   glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glBindBufferARB(GL_ARRAY_BUFFER_ARB, vboDots);
+	glBufferDataARB(GL_ElEMENT_ARRAY_BUFFER_ARB, sizeof(model->numvertices), model->numvertices, GL_STATIC_DRAW_ARB);
 
-   glEnable(GL_LIGHTING);
-   glEnable(GL_LIGHT0);
-   glEnable(GL_DEPTH_TEST);
-   initGLSLProgram("vertexshader.glsl","fragmentshader.glsl");
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, vboTriangles);
+	glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(model->triangles), model->triangles, GL_STATIC_DRAW_ARB);
+
+
+}
+
+void glmDrawVBO(){
+
+}
+
+void init(void){
+
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+
+	GLfloat light_position[] = {-200.0,600.0,1500.0, 1.0};
+	GLfloat light_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+
+	glClearColor (0.0, 0.0, 0.0, 0.0);
+	glShadeModel (GL_SMOOTH);
+
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+
+
+	model = glmReadOBJ("obj/devilduk.obj");
+	if(!model) printf("Object niet geladen\n");
+	glmFacetNormals(model);
+	glmVertexNormals(model, 90.0 );
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
+	initGLSLProgram("vertexshader.glsl","fragmentshader.glsl");
 }
 
 
-
 void display(void){
-	float i;
-	float x = 0.0, y = 0.0;
 
-	glClear(GL_ACCUM_BUFFER_BIT);
+	/* Clear all pixels */
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	gluLookAt(0.0,0.0,3.0,0.0,0.0,0.0,0.0,1.0,0.0);
 
-	for(i = 0.0; i < apertureSamples; i++){
-		float r = CONST_C * sqrt(i);
-		float theta = i * GOLDEN_ANGLE;
-		x = r * cos(theta);
-		y = r * sin(theta);
+	//Zoom
+	glTranslatef(1.0, 1.0, zoomLevel);
 
-		/* Clear all pixels */
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-		glLoadIdentity();
-		gluLookAt(200.0+x,200.0+y,eyeDistance,200.0,200.0,focusDistance,0.0,1.0,0.0);
+	//Rotate around origin
+	glRotatef(deltaY,1,0,0);
+	glRotatef(deltaX,0,1,0);
 
-		//Zoom
-		glTranslatef(1.0, 1.0, zoomLevel*100);
+	//Draw model
+	glmUnitize(model);
+	glmScale(model, 2);
+	glmDraw(model, GLM_SMOOTH);
+	glPushMatrix();
 
-		//Rotate around point (200,200,200)
-		glTranslatef(200, 200, 200);
-		glRotatef(deltaY,1,0,0);
-		glRotatef(deltaX,0,1,0);
-		glTranslatef(-200, -200, -200);
+	glAccum(GL_ACCUM, (1/apertureSamples));
+	glFlush();
 
-		//Insert spheres
-		setGlMaterial(0.0f,0.0f,1.0f,0.2,0.7,0.5,64);
-		glPushMatrix();
-		glTranslated(90,320,100);
-		glutSolidSphere(50,SPHERE_N,SPHERE_N);
-		glPopMatrix();
-
-		setGlMaterial(0.0f,1.0f,0.0f,0.2,0.3,0.5,8);
-		glPushMatrix();
-		glTranslated(210,270,300);
-		glutSolidSphere(50,SPHERE_N,SPHERE_N);
-		glPopMatrix();
-
-		setGlMaterial(1.0f,0.0f,0.0f,0.2,0.7,0.8,32);
-		glPushMatrix();
-		glTranslated(290,170,150);
-		glutSolidSphere(50,SPHERE_N,SPHERE_N);
-		glPopMatrix();
-
-		setGlMaterial(1.0f,0.8f,0.0f,0.2,0.8,0.0,1);
-		glPushMatrix();
-		glTranslated(140,220,400);
-		glutSolidSphere(50,SPHERE_N,SPHERE_N);
-		glPopMatrix();
-
-		setGlMaterial(1.0f,0.5f,0.0f,0.2,0.8,0.5,32);
-		glPushMatrix();
-		glTranslated(110,130,200);
-		glutSolidSphere(50,SPHERE_N,SPHERE_N);
-		glPopMatrix();
-
-		glAccum(GL_ACCUM, (1/apertureSamples));
-		glFlush();
-	}
-	glAccum(GL_RETURN, 1.0);
-    glutSwapBuffers();
+	glutSwapBuffers();
 }
 
 void mouse(int button, int state, int x, int y){
@@ -202,7 +198,7 @@ void reshape(int w, int h){
     glViewport(0,0, (GLsizei) w, (GLsizei) h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(2.0*atan2(h/2.0,1000.0)*180.0/M_PI,(GLdouble)w/(GLdouble)h,500,1000);
+    gluPerspective(60.0,(GLdouble)w/(GLdouble)h,1.5,20.0);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -214,8 +210,8 @@ int main(int argc, char** argv)
 
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_ACCUM);
-    glutInitWindowSize(400,400);
-    glutInitWindowPosition(220,100);
+    glutInitWindowSize(800,800);
+    glutInitWindowPosition(400, 300);
     glutCreateWindow("Computer Graphics - OpenGL framework");
 
 #if defined(NEED_GLEW)

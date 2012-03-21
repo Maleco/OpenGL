@@ -33,6 +33,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../openglframework/glew.h" />
+		<Unit filename="../openglframework/glm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../openglframework/glm.h" />
 		<Unit filename="../openglframework/glslshaders.c">
 			<Option compilerVar="CC" />
 		</Unit>

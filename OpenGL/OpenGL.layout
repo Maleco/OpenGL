@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
+	<File name="../openglframework/Makefile" open="0" top="0" tabpos="0">
+		<Cursor position="200" topLine="0" />
+	</File>
 	<File name="../openglframework/fragmentshader.glsl" open="0" top="0" tabpos="3">
-		<Cursor position="581" topLine="0" />
+		<Cursor position="370" topLine="0" />
 	</File>
 	<File name="../openglframework/glew.c" open="0" top="0" tabpos="0">
-		<Cursor position="2848" topLine="64" />
+		<Cursor position="69431" topLine="1288" />
+	</File>
+	<File name="../openglframework/glew.h" open="0" top="0" tabpos="0">
+		<Cursor position="179211" topLine="3672" />
+	</File>
+	<File name="../openglframework/glm.c" open="0" top="0" tabpos="0">
+		<Cursor position="17489" topLine="648" />
+	</File>
+	<File name="../openglframework/glm.h" open="0" top="0" tabpos="0">
+		<Cursor position="2973" topLine="70" />
 	</File>
 	<File name="../openglframework/glslshaders.c" open="0" top="0" tabpos="2">
-		<Cursor position="2065" topLine="39" />
+		<Cursor position="1542" topLine="40" />
 	</File>
 	<File name="../openglframework/glxew.h" open="0" top="0" tabpos="3">
 		<Cursor position="4406" topLine="79" />
 	</File>
 	<File name="../openglframework/openglframework.c" open="0" top="0" tabpos="1">
-		<Cursor position="2831" topLine="81" />
+		<Cursor position="1934" topLine="55" />
 	</File>
 	<File name="../openglframework/vertexshader.glsl" open="0" top="0" tabpos="0">
-		<Cursor position="182" topLine="0" />
+		<Cursor position="179" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
